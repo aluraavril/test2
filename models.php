@@ -1,60 +1,42 @@
-<?php
-function fetchApplicants($pdo, $search = null) {
-    $sql = "SELECT * FROM applicants";
-    if ($search) {
-        $sql .= " WHERE CONCAT_WS(' ', first_name, last_name, email, phone, address, job_title, skills, status) LIKE ?";
-    }
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($search ? ["%$search%"] : []);
-    return [
-        'message' => 'Applicants fetched successfully.',
-        'statusCode' => 200,
-        'querySet' => $stmt->fetchAll()
-    ];
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AV CoolTech Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white font-sans">
 
-function insertApplicant($pdo, $data) {
-    try {
-        $sql = "INSERT INTO applicants (first_name, last_name, email, phone, address, job_title, skills, status, added_by) 
-                VALUES (:first_name, :last_name, :email, :phone, :address, :job_title, :skills, :status, :added_by)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($data);
-        return ['message' => 'Applicant added successfully.', 'statusCode' => 200];
-    } catch (PDOException $e) {
-        return ['message' => 'Error: ' . $e->getMessage(), 'statusCode' => 400];
-    }
-}
+    <!-- Navbar -->
+    <nav class="fixed w-full bg-black bg-opacity-90 p-5">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold tracking-wide">AV CoolTech</h1>
+            <ul class="flex space-x-6 text-lg">
+                <li><a href="index.html" class="hover:underline">Home</a></li>
+                <li><a href="services.html" class="hover:underline">Services</a></li>
+                <li><a href="about.html" class="hover:underline">About</a></li>
+                <li><a href="faq.html" class="hover:underline">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
 
-function updateApplicant($pdo, $id, $data) {
-    try {
-        $sql = "UPDATE applicants SET first_name = :first_name, last_name = :last_name, email = :email, phone = :phone, 
-                address = :address, job_title = :job_title, skills = :skills, status = :status, added_by = :added_by 
-                WHERE id = :id";
-        $stmt = $pdo->prepare($sql);
-        $data['id'] = $id;
-        $stmt->execute($data);
-        return ['message' => 'Applicant updated successfully.', 'statusCode' => 200];
-    } catch (PDOException $e) {
-        return ['message' => 'Error: ' . $e->getMessage(), 'statusCode' => 400];
-    }
-}
+    <!-- Hero Section -->
+    <section class="relative w-full h-screen flex items-center justify-center text-center">
+        <img src="YOUR_BACKGROUND_IMAGE_URL" class="absolute w-full h-full object-cover opacity-50">
+        <div class="relative">
+            <h2 class="text-6xl font-extrabold">Stay Cool, Stay Comfortable</h2>
+            <p class="mt-4 text-xl opacity-80">Reliable Air Conditioning Solutions for Homes & Businesses.</p>
+            <a href="services.html" class="mt-6 inline-block bg-white text-black font-semibold py-3 px-8 rounded-full hover:bg-gray-300 transition">
+                View Our Services
+            </a>
+        </div>
+    </section>
 
-function deleteApplicant($pdo, $id) {
-    try {
-        $sql = "DELETE FROM applicants WHERE id = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['id' => $id]);
+    <!-- Footer -->
+    <footer class="bg-black text-center py-5 text-gray-400">
+        <p>&copy; 2025 AV CoolTech Solutions. All rights reserved.</p>
+    </footer>
 
-        return [
-            'message' => 'Applicant deleted successfully.',
-            'statusCode' => 200
-        ];
-    } catch (PDOException $e) {
-        return [
-            'message' => 'Error deleting applicant: ' . $e->getMessage(),
-            'statusCode' => 400
-        ];
-    }
-}
-
-?>
+</body>
+</html>
